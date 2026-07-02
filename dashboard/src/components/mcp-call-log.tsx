@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { PanelHeader } from "@/components/panel";
+import { Icons } from "@/components/icons";
 import type { MCPCallInterceptedPayload, RiskLevel, TelemetryEvent } from "@/lib/types";
 
 interface McpCallLogProps {
@@ -56,15 +58,19 @@ export function McpCallLog({ events }: McpCallLogProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-glass-border px-5 py-3">
-        <h2 className="text-sm font-medium text-muted">Outbound MCP Tool Calls</h2>
-        <span className="font-mono text-[11px] text-muted">
-          {rows.length} call(s)
-          {rows.some((r) => r.halted) && (
-            <span className="text-halt"> · {rows.filter((r) => r.halted).length} halted</span>
-          )}
-        </span>
-      </div>
+      <PanelHeader
+        icon={<Icons.table size={15} />}
+        title="Outbound MCP Tool Calls"
+        tone={rows.some((r) => r.halted) ? "halt" : "accent"}
+        right={
+          <span className="font-mono text-[11px] text-muted">
+            <span className="tnum">{rows.length}</span> call(s)
+            {rows.some((r) => r.halted) && (
+              <span className="text-halt"> · {rows.filter((r) => r.halted).length} halted</span>
+            )}
+          </span>
+        }
+      />
 
       {rows.length === 0 ? (
         <div className="flex flex-1 items-center justify-center p-6">
