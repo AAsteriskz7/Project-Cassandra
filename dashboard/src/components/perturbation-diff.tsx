@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
+import { PanelHeader } from "@/components/panel";
+import { Icons } from "@/components/icons";
 import type { DivergenceScoredPayload, PerturbationGeneratedPayload } from "@/lib/types";
 
 interface PerturbationDiffProps {
@@ -94,17 +96,21 @@ export function PerturbationDiff({ originalCot, perturbations, divergence }: Per
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-glass-border px-5 py-3">
-        <h2 className="text-sm font-medium text-muted">Adversarial Perturbation Diff</h2>
-        {divergence && (
-          <span className="font-mono text-[11px] text-muted">
-            composite{" "}
-            <span className={divergence.composite_score >= 0.4 ? "text-halt" : "text-allow"}>
-              {divergence.composite_score.toFixed(3)}
+      <PanelHeader
+        icon={<Icons.split size={15} />}
+        title="Adversarial Perturbation Diff"
+        tone="violet"
+        right={
+          divergence && (
+            <span className="font-mono text-[11px] text-muted">
+              composite{" "}
+              <span className={`tnum font-semibold ${divergence.composite_score >= 0.4 ? "text-halt" : "text-allow"}`}>
+                {divergence.composite_score.toFixed(3)}
+              </span>
             </span>
-          </span>
-        )}
-      </div>
+          )
+        }
+      />
 
       {!diffs ? (
         <div className="flex flex-1 items-center justify-center p-6">
