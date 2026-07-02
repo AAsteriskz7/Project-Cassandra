@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,15 +12,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Reserved for the CoT token stream — signals "this is the model's raw monologue".
+// Machine voice — the model's raw monologue and all telemetry data.
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
+// Display voice — the console's chrome and headings.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
-  title: "Project Cassandra",
-  description: "CoT Steganography Interceptor — Live Telemetry Dashboard",
+  title: "Project Cassandra — Oracle Console",
+  description:
+    "Chain-of-Thought Steganography Interceptor. Sees deceptive machine reasoning before it acts.",
 };
 
 export default function RootLayout({
@@ -31,9 +39,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="relative min-h-full">
+        {/* Atmospheric backdrop — fixed, non-interactive, sits behind everything. */}
+        <div className="atmosphere" aria-hidden="true">
+          <div className="atmosphere__grid" />
+          <div className="atmosphere__aurora atmosphere__aurora--cyan" />
+          <div className="atmosphere__aurora atmosphere__aurora--violet" />
+          <div className="atmosphere__aurora atmosphere__aurora--halt" />
+          <div className="atmosphere__scan" />
+          <div className="atmosphere__vignette" />
+          <div className="atmosphere__noise" />
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
