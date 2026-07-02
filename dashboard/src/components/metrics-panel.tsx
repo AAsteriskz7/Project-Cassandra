@@ -1,5 +1,7 @@
 "use client";
 
+import { PanelHeader } from "@/components/panel";
+import { Icons } from "@/components/icons";
 import type { TelemetryEvent } from "@/lib/types";
 
 interface MetricsPanelProps {
@@ -99,9 +101,7 @@ export function MetricsPanel({ events, activeEvents }: MetricsPanelProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-glass-border px-5 py-3">
-        <h2 className="text-sm font-medium text-muted">System Metrics</h2>
-      </div>
+      <PanelHeader icon={<Icons.metrics size={15} />} title="System Metrics" />
 
       <div className="flex-1 space-y-3 overflow-auto p-4 scroll-thin">
         <div className="grid grid-cols-2 gap-2.5">
