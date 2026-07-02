@@ -46,11 +46,11 @@ export default function Home() {
   const decision = gate?.decision ?? null;
   const riskLevel = gate?.risk_level ?? null;
 
-  const triggerReplay = async () => {
+    const triggerReplay = async () => {
     setReplaying(true);
     setReplayStatus(null);
     try {
-      const r = await fetch(`${BACKEND_URL}/v1/telemetry/replay`, {
+      const r = await fetch(`${BACKEND_URL}/v1/telemetry/replay/all`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ delay_seconds: 1.0 }),
@@ -59,8 +59,10 @@ export default function Home() {
       if (!r.ok) {
         setReplayStatus(`error · ${data?.detail ?? r.status}`);
       } else {
-        setReplayStatus(`streaming ${data.event_count} events · ${String(data.source_session_id).slice(0, 8)}`);
-        setTimeout(() => setReplaying(false), data.event_count * 1000 + 500);
+        setReplayStatus(`streaming ${data.session_count} scenarios (${data.event_count} events)`);
+        // Add 2.0 seconds pause between each scenario + event delay
+        const totalDuration = (data.event_count * 1000) + (data.session_count * 2000) + 500;
+        setTimeout(() => setReplaying(false), totalDuration);
         return;
       }
     } catch {

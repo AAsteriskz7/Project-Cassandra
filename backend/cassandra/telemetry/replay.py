@@ -129,3 +129,39 @@ async def replay_session(req: ReplayRequest):
         "delay_seconds": req.delay_seconds,
         "ws_clients": WebSocketManager.get().connection_count,
     }
+
+
+@router.post("/replay/all")
+async def replay_all_sessions(req: ReplayRequest):
+    """
+    Re-stream the last 5 completed sessions sequentially.
+    """
+    files = sorted(_log_dir().glob("*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True)
+    sessions_to_replay = []
+    for path in files:
+        events = _load_session_file(path)
+        if _is_completed(events):
+            sessions_to_replay.append(events)
+        if len(sessions_to_replay) >= 5:
+            break
+            
+    if not sessions_to_replay:
+        raise HTTPException(status_code=404, detail="No completed sessions found")
+        
+    sessions_to_replay.reverse() # Play oldest to newest
+    total_events = sum(len(evs) for evs in sessions_to_replay)
+    
+    async def _stream_all():
+        for events in sessions_to_replay:
+            await _stream_events(events, req.delay_seconds, req.fresh_session)
+            await asyncio.sleep(2.0)
+            
+    asyncio.create_task(_stream_all())
+    
+    return {
+        "status": "replay_all_started",
+        "session_count": len(sessions_to_replay),
+        "event_count": total_events,
+        "delay_seconds": req.delay_seconds,
+        "ws_clients": WebSocketManager.get().connection_count,
+    }
