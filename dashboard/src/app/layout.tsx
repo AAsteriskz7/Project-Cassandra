@@ -41,7 +41,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
-      <body className="relative min-h-full">
+      <body className="relative min-h-full" suppressHydrationWarning>
         {/* Atmospheric backdrop — fixed, non-interactive, sits behind everything. */}
         <div className="atmosphere" aria-hidden="true">
           <div className="atmosphere__grid" />
