@@ -1,0 +1,59 @@
+# Environments
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Next.js / Node
+node_modules/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Telemetry
+backend/telemetry_logs/
+telemetry_logs/
+backend/cassandra/__pycache__/
+backend/cassandra/agents/__pycache__/
+backend/cassandra/analysis/__pycache__/
+backend/cassandra/mcp/__pycache__/
+backend/cassandra/proxy/__pycache__/
+backend/cassandra/telemetry/__pycache__/
+backend/demo/__pycache__/
+
+# IDEs
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
